@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32819.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3169986F-E4E0-4DB8-8FD0-D0EDB76A28F6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "example", "example", "{E081D64B-BB0A-40B0-872B-C76D6E39B2E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{2B210D7F-17E6-4D19-A8A1-3F0E3823C4FC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnowflakeId.Core", "src\core\SnowflakeId.Core.csproj", "{2E3FBC65-ACA9-478E-ACEB-524A6B46F724}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnowflakeId.Example", "example\SnowflakeId.Example\SnowflakeId.Example.csproj", "{7263110D-C925-444B-9F32-CC33A8411B6C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E3FBC65-ACA9-478E-ACEB-524A6B46F724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E3FBC65-ACA9-478E-ACEB-524A6B46F724}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E3FBC65-ACA9-478E-ACEB-524A6B46F724}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E3FBC65-ACA9-478E-ACEB-524A6B46F724}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7263110D-C925-444B-9F32-CC33A8411B6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7263110D-C925-444B-9F32-CC33A8411B6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7263110D-C925-444B-9F32-CC33A8411B6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7263110D-C925-444B-9F32-CC33A8411B6C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2B210D7F-17E6-4D19-A8A1-3F0E3823C4FC} = {3169986F-E4E0-4DB8-8FD0-D0EDB76A28F6}
+		{2E3FBC65-ACA9-478E-ACEB-524A6B46F724} = {2B210D7F-17E6-4D19-A8A1-3F0E3823C4FC}
+		{7263110D-C925-444B-9F32-CC33A8411B6C} = {E081D64B-BB0A-40B0-872B-C76D6E39B2E7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {33261051-FE73-4948-B4BC-1B8FA21BF24F}
+	EndGlobalSection
+EndGlobal
