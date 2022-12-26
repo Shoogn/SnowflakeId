@@ -1,7 +1,9 @@
 ﻿/*
- 
- Build and implemented with love by Mohammed Ahmed Hussien Babiker
- 
+                        GNU GENERAL PUBLIC LICENSE
+                          Version 3, 29 June 2007
+ Copyright (C) 2022 Mohammed Ahmed Hussien babiker Free Software Foundation, Inc. <https://fsf.org/>
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
  */
 
 
@@ -17,7 +19,6 @@ namespace SnowflakeId.Core
         private long _lastTimestamp = -1L;
         private long _sequence = 0L;
         private readonly int _machaineId;
-
 
         // result is 22
         const int _timeStampShift = SnowflakeIdOptionBuilder.TotalBits - SnowflakeIdOptionBuilder.EpochBits;
@@ -69,7 +70,7 @@ namespace SnowflakeId.Core
         #region Helper Functions
         private long getTimestamp()
         {
-            return (long)(DateTime.UtcNow - Jan1st2020).TotalMilliseconds;
+            return (long)(DateTime.UtcNow - Jan1st1970).TotalMilliseconds;
         }
 
         private long waitToGetNextMillis(long currentTimestamp)
@@ -81,8 +82,8 @@ namespace SnowflakeId.Core
             return currentTimestamp;
         }
 
-        // Your Epoch Start at 2020 Jan 1s 
-        private static DateTime Jan1st2020 = new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        // Your Epoch Start at 1970 Jan 1s ( Unix Time )
+        private static DateTime Jan1st1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         #endregion
     }
 }
