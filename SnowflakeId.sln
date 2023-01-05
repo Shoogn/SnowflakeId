@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnowflakeId.Core", "src\cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnowflakeId.Example", "example\SnowflakeId.Example\SnowflakeId.Example.csproj", "{7263110D-C925-444B-9F32-CC33A8411B6C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnowflakeId.AspNetCoreSample", "SnowflakeId.AspNetCoreSample\SnowflakeId.AspNetCoreSample.csproj", "{19AA3852-A5A7-4F5C-B283-242D30FFB52C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{7263110D-C925-444B-9F32-CC33A8411B6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7263110D-C925-444B-9F32-CC33A8411B6C}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{7263110D-C925-444B-9F32-CC33A8411B6C}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{19AA3852-A5A7-4F5C-B283-242D30FFB52C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19AA3852-A5A7-4F5C-B283-242D30FFB52C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19AA3852-A5A7-4F5C-B283-242D30FFB52C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19AA3852-A5A7-4F5C-B283-242D30FFB52C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -35,6 +41,7 @@ Global
 		{2B210D7F-17E6-4D19-A8A1-3F0E3823C4FC} = {3169986F-E4E0-4DB8-8FD0-D0EDB76A28F6}
 		{2E3FBC65-ACA9-478E-ACEB-524A6B46F724} = {2B210D7F-17E6-4D19-A8A1-3F0E3823C4FC}
 		{7263110D-C925-444B-9F32-CC33A8411B6C} = {E081D64B-BB0A-40B0-872B-C76D6E39B2E7}
+		{19AA3852-A5A7-4F5C-B283-242D30FFB52C} = {E081D64B-BB0A-40B0-872B-C76D6E39B2E7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {33261051-FE73-4948-B4BC-1B8FA21BF24F}
