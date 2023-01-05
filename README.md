@@ -18,6 +18,7 @@ First you have to imports these namespaces
 using SnowflakeId.Core;
 using SnowflakeId.Core.DependencyInjection;
 using SnowflakeId.Provider;
+using SnowflakeIdResult = SnowflakeId.Provider.SnowflakeId;
 ```
 
 Second register the Snowflake service by adding these lines:
@@ -41,7 +42,7 @@ var app = builder.Build();
 app.MapGet("/", (ISnowflakeService snowflakeService, ISnowflakeIdProvider snowflakeIdProvider) =>
 {
     long generatingId = snowflakeService.GenerateSnowflakeId();
-    SnowflakeId.Provider.SnowflakeId sn = snowflakeIdProvider.GetDateTimeBySnowflakeId(generatingId);
+    SnowflakeIdResult sn = snowflakeIdProvider.GetDateTimeBySnowflakeId(generatingId);
 
 
     return $"The genrated Id is: { generatingId } - and is genrated at { sn.GeneratedDateTime }";
