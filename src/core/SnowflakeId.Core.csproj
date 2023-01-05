@@ -4,6 +4,20 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
+    <PackageId>Hussien.SnowflakeId</PackageId>
+    <Title>Hussien.SnowflakeId</Title>
+    <Authors>Mohammed Ahmed Hussien</Authors>
+    <PackageProjectUrl>https://github.com/Shoogn/SnowflakeId</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Shoogn/SnowflakeId</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>SnowflakeId, twitterSnowflakeId, twitterSnowflake</PackageTags>
+    <NeutralLanguage>aa</NeutralLanguage>
+    <Description>This is an implementation for twitter's snowflakeId algorithm in C# language
+that help anyone needs a unique Id in Distrbuted Systems</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="DependencyInjections\" />
+  </ItemGroup>
 
 </Project>
