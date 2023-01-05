@@ -17,7 +17,9 @@ that help anyone needs a unique Id in Distrbuted Systems</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DependencyInjections\" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

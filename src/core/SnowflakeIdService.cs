@@ -7,18 +7,19 @@
  */
 
 
+using Microsoft.Extensions.Options;
+using SnowflakeId.Core.Options;
 using System;
 
 namespace SnowflakeId.Core
 {
-    public class SnowflakeIdService
+    public class SnowflakeIdService : ISnowflakeService
     {
         // Lock Token
         private readonly object threadLock = new object();
 
         private long _lastTimestamp = -1L;
         private long _sequence = 0L;
-        private readonly int _machaineId;
 
         // result is 22
         const int _timeStampShift = SnowflakeIdOptionBuilder.TotalBits - SnowflakeIdOptionBuilder.EpochBits;
@@ -26,11 +27,12 @@ namespace SnowflakeId.Core
         // result is 12
         const int _machaineIdShift = SnowflakeIdOptionBuilder.TotalBits - SnowflakeIdOptionBuilder.EpochBits - SnowflakeIdOptionBuilder.MachineIdBits;
 
-        public SnowflakeIdService(int machaineId)
+        private readonly SnowflakOptions _snowflakOptions;
+
+        public SnowflakeIdService(IOptions<SnowflakOptions> options)
         {
-            _machaineId = machaineId;
+            _snowflakOptions = options.Value;
         }
-       // public SnowflakeIdOptionBuilder Options { get; }
 
         public virtual long GenerateSnowflakeId()
         {
@@ -61,13 +63,13 @@ namespace SnowflakeId.Core
 
                 _lastTimestamp = currentTimestamp;
 
-                var result = (currentTimestamp << _timeStampShift) | ((long)_machaineId << _machaineIdShift) | (_sequence);
+                var result = (currentTimestamp << _timeStampShift) | ((long)_snowflakOptions.DataCenterId << _machaineIdShift) | (_sequence);
 
                 return result;
             }
         }
 
-        #region Helper Functions
+   
         private long getTimestamp()
         {
             return (long)(DateTime.UtcNow - Jan1st1970).TotalMilliseconds;
@@ -84,6 +86,6 @@ namespace SnowflakeId.Core
 
         // Your Epoch Start at 1970 Jan 1s ( Unix Time )
         private static DateTime Jan1st1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        #endregion
+  
     }
 }

@@ -9,7 +9,7 @@
 using System;
 namespace SnowflakeId.Core
 {
-    public class SnowflakeIdOptionBuilder
+    internal class SnowflakeIdOptionBuilder
     {
         /// <summary>
         /// Total size of the Id in bits, 64
