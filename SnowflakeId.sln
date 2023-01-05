@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnowflakeId.Core", "src\cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnowflakeId.Example", "example\SnowflakeId.Example\SnowflakeId.Example.csproj", "{7263110D-C925-444B-9F32-CC33A8411B6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnowflakeId.AspNetCoreSample", "SnowflakeId.AspNetCoreSample\SnowflakeId.AspNetCoreSample.csproj", "{19AA3852-A5A7-4F5C-B283-242D30FFB52C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SnowflakeId.AspNetCoreSample", "SnowflakeId.AspNetCoreSample\SnowflakeId.AspNetCoreSample.csproj", "{19AA3852-A5A7-4F5C-B283-242D30FFB52C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +21,8 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2E3FBC65-ACA9-478E-ACEB-524A6B46F724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E3FBC65-ACA9-478E-ACEB-524A6B46F724}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E3FBC65-ACA9-478E-ACEB-524A6B46F724}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{2E3FBC65-ACA9-478E-ACEB-524A6B46F724}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{2E3FBC65-ACA9-478E-ACEB-524A6B46F724}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E3FBC65-ACA9-478E-ACEB-524A6B46F724}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7263110D-C925-444B-9F32-CC33A8411B6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

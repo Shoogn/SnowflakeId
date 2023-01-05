@@ -25,8 +25,6 @@ IHost host = Host.CreateDefaultBuilder(args)
 var idServive = host.Services.GetRequiredService<ISnowflakeService>();
 var idProvider = host.Services.GetRequiredService<ISnowflakeIdProvider>();
 
-
-
 var uniqueId = idServive.GenerateSnowflakeId();
 Console.WriteLine("The unique Id is: {0}", uniqueId);
 Console.WriteLine("*******************************");
