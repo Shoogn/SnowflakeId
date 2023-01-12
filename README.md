@@ -1,5 +1,5 @@
 ### SnowflakeId
-This is a implementation for twitter's snowflakeId algorithm in C# language
+This is the implementation of twitter's snowflakeId algorithm in C# language
 
 ### Get Started
 SnowflakeId is a library that can help you to generate a unique Id, specifically for those who are working in a Distributed Systems.
