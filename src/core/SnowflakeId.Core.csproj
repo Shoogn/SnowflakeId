@@ -1,26 +1,33 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>disable</ImplicitUsings>
-    <Nullable>disable</Nullable>
-    <PackageId>Hussien.SnowflakeId</PackageId>
-    <Title>Hussien.SnowflakeId</Title>
-    <Authors>Mohammed Ahmed Hussien</Authors>
-    <PackageProjectUrl>https://github.com/Shoogn/SnowflakeId</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Shoogn/SnowflakeId</RepositoryUrl>
-	  <Version>2.0.0</Version>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>SnowflakeId, twitterSnowflakeId, twitterSnowflake</PackageTags>
-    <NeutralLanguage>aa</NeutralLanguage>
-    <Description>This is an implementation for twitter's snowflakeId algorithm in C# language
-that help anyone needs a unique Id in Distrbuted Systems</Description>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<PackageId>Hussien.SnowflakeId</PackageId>
+		<Title>Hussien.SnowflakeId</Title>
+		<Authors>Mohammed Ahmed Hussien</Authors>
+		<PackageProjectUrl>https://github.com/Shoogn/SnowflakeId</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/Shoogn/SnowflakeId</RepositoryUrl>
+		<Version>2.0.0</Version>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>SnowflakeId, twitterSnowflakeId, twitterSnowflake</PackageTags>
+		<NeutralLanguage>aa</NeutralLanguage>
+		<Description>
+			This is an implementation for twitter's snowflakeId algorithm in C# language
+			that help anyone needs a unique Id in Distrbuted Systems
+		</Description>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-  </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+	</ItemGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0" />
+	</ItemGroup>
 </Project>
