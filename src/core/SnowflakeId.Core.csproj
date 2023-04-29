@@ -9,10 +9,10 @@
 		<Authors>Mohammed Ahmed Hussien</Authors>
 		<PackageProjectUrl>https://github.com/Shoogn/SnowflakeId</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Shoogn/SnowflakeId</RepositoryUrl>
-		<Version>2.0.0</Version>
+		<Version>2.1.0</Version>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>SnowflakeId, twitterSnowflakeId, twitterSnowflake</PackageTags>
-		<NeutralLanguage>aa</NeutralLanguage>
+		<NeutralLanguage>en-SD</NeutralLanguage>
 		<Description>
 			This is an implementation for twitter's snowflakeId algorithm in C# language
 			that help anyone needs a unique Id in Distrbuted Systems
