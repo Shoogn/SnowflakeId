@@ -6,7 +6,7 @@
  of this license document, but changing it is not allowed.
  */
 
-namespace SnowflakeId.Core.Options
+namespace SnowflakeId.Core
 {
     public class SnowflakOptions
     {

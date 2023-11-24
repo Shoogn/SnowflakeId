@@ -8,7 +8,7 @@
 
 using System;
 
-namespace SnowflakeId.Provider
+namespace SnowflakeId.Core
 {
     public class SnowflakeId
     {

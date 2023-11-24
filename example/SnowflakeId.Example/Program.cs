@@ -8,8 +8,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SnowflakeId.Core;
-using SnowflakeId.Core.DependencyInjection;
-using SnowflakeId.Provider;
+using SnowflakeId.DependencyInjection;
 using System;
 
 
@@ -18,20 +17,21 @@ IHost host = Host.CreateDefaultBuilder(args)
     {
         services.AddSnowflakeUniqueId(options =>
         {
-            options.DataCenterId = 1;
+            options.DataCenterId = 7;
         });
     }).Build();
 
 var idServive = host.Services.GetRequiredService<ISnowflakeService>();
-var idProvider = host.Services.GetRequiredService<ISnowflakeIdProvider>();
 
 var uniqueId = idServive.GenerateSnowflakeId();
 Console.WriteLine("The unique Id is: {0}", uniqueId);
 Console.WriteLine("*******************************");
 
-var generatedAt = idProvider.GetDateTimeBySnowflakeId(uniqueId);
+var generatedAt = idServive.GetGeneratedDateTimeBySnowflakeId(uniqueId);
 
-Console.WriteLine("The Id is: {0} and is generated At: {1}", generatedAt.Id, generatedAt.GeneratedDateTime);
+Console.WriteLine("The Id is: {0} and is generated At: {1}", uniqueId, generatedAt);
 
+var dataCenterId = idServive.GetDataCenterIdBySnowflakId(uniqueId);
+Console.WriteLine("The id is generated at data center has id: {0}", dataCenterId);
 
 Console.ReadLine();

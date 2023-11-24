@@ -9,15 +9,15 @@ of this license document, but changing it is not allowed.
 using System;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.DependencyInjection;
-using SnowflakeId.Provider;
-using SnowflakeId.Core.Options;
+using SnowflakeId.Core;
 
 
-namespace SnowflakeId.Core.DependencyInjection
+namespace SnowflakeId.DependencyInjection
 {
     public static class SnowflakeIdServiceExtensions
     {
-        public static IServiceCollection AddSnowflakeUniqueId(this IServiceCollection services, Action<SnowflakOptions> setupAction)
+        public static IServiceCollection AddSnowflakeUniqueId(this IServiceCollection services, 
+            Action<SnowflakOptions> setupAction)
         {
             if (services == null)
             {
@@ -29,8 +29,7 @@ namespace SnowflakeId.Core.DependencyInjection
                 throw new ArgumentNullException(nameof(setupAction));
             }
 
-            services.TryAddSingleton<ISnowflakeService, SnowflakeIdService>();
-            services.TryAddScoped<ISnowflakeIdProvider, SnowflakeIdProvider>();
+            services.TryAddScoped<ISnowflakeService, SnowflakeIdService>();
             services.Configure(setupAction);
             return services;
         }
