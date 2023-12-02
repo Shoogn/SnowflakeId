@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using SnowflakeId.Core;
 using SnowflakeId.DependencyInjection;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSnowflakeUniqueId(options =>
@@ -13,10 +14,11 @@ var app = builder.Build();
 app.MapGet("/", (ISnowflakeService snowflakeService) =>
 {
     long generatingId = snowflakeService.GenerateSnowflakeId();
-    var generatedAt = snowflakeService.GetGeneratedDateTimeBySnowflakeId(generatingId);
+    DateTime generatedAt = snowflakeService.GetGeneratedDateTimeBySnowflakeId(generatingId);
+    int dataCenterId = snowflakeService.GetDataCenterIdBySnowflakId(generatingId);
 
 
-    return $"The genrated Id is: { generatingId } - and is genrated at { generatedAt }";
+    return $"The genrated Id is: { generatingId } - and is genrated at: { generatedAt } - at Data Center Id: {dataCenterId}";
 });
 
 app.Run();
