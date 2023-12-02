@@ -15,12 +15,11 @@ dotnet add package Hussien.SnowflakeId --version 3.0.0
 
 First you have to imports these namespaces
 ```
-using Microsoft.AspNetCore.Builder;
 using SnowflakeId.Core;
 using SnowflakeId.DependencyInjection;
 ```
 
-Second register the Snowflake service by adding these lines:
+Second register the Hussine.SnowflakeId library service by adding next two lines of code:
 ```C#
 builder.Services.AddSnowflakeUniqueId(options =>
 {
@@ -28,8 +27,12 @@ builder.Services.AddSnowflakeUniqueId(options =>
 });
 ```
 
-### The Complete Example:
+### The Complete Asp.NET Core Example:
 ```C#
+using Microsoft.AspNetCore.Builder;
+using SnowflakeId.Core;
+using SnowflakeId.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSnowflakeUniqueId(options =>
 {
@@ -38,22 +41,24 @@ builder.Services.AddSnowflakeUniqueId(options =>
 
 var app = builder.Build();
 
-app.MapGet("/", (ISnowflakeService snowflakeService, ISnowflakeIdProvider snowflakeIdProvider) =>
+app.MapGet("/", (ISnowflakeService snowflakeService) =>
 {
     long generatingId = snowflakeService.GenerateSnowflakeId();
-    SnowflakeIdResult sn = snowflakeIdProvider.GetDateTimeBySnowflakeId(generatingId);
+    DateTime generatedAt = snowflakeService.GetGeneratedDateTimeBySnowflakeId(generatingId);
+    int dataCenterId = snowflakeService.GetDataCenterIdBySnowflakId(generatingId);
 
-    return $"The genrated Id is: { generatingId } - and is genrated at { sn.GeneratedDateTime }";
+    return $"The genrated Id is: { generatingId } - and is genrated at: { generatedAt } - at Data Center Id: {dataCenterId}";
 });
 
 app.Run();
 ```
+
 And here is the result if you run the app:
-![aspsnow](https://user-images.githubusercontent.com/18530495/210797780-f69c14c8-7158-4daa-bba0-36b313852026.JPG)
+![image](https://github.com/Shoogn/SnowflakeId/assets/18530495/6d05dcd7-4a87-4fb9-86a7-bfd79aca7c80)
 
 
 ---
-### With Console Application
+### With Console Application Or any other .NET application:
 ```C#
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
