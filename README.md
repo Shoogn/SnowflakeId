@@ -1,13 +1,13 @@
 ### SnowflakeId
-This is the implementation of twitter's snowflakeId algorithm in C# language
+This is the implementation of twitter's snowflakeId algorithm in C# programming language
 
 ### Get Started
 SnowflakeId is a library that can help you to generate a unique Id, specifically for those who are working in a Distributed Systems.
-The currently version is version 2.0.0, and there are break changes in this version with version 1.0.0 so be careful when you upgrade from version 1.0.0 to version 2.0.0
+The currently version is version 3.0.0, and there are break changes in this version when you upgrade from an older versions so be careful when you upgrade to version 3.0.0
 
 For any .NET application higher than .Net 6 install the library by using NuGet package command
 ```
-dotnet add package Hussien.SnowflakeId --version 2.0.0
+dotnet add package Hussien.SnowflakeId --version 3.0.0
 ```
 ---
 
@@ -16,21 +16,23 @@ dotnet add package Hussien.SnowflakeId --version 2.0.0
 First you have to imports these namespaces
 ```
 using SnowflakeId.Core;
-using SnowflakeId.Core.DependencyInjection;
-using SnowflakeId.Provider;
-using SnowflakeIdResult = SnowflakeId.Provider.SnowflakeId;
+using SnowflakeId.DependencyInjection;
 ```
 
-Second register the Snowflake service by adding these lines:
+Second register the Hussine.SnowflakeId library service by adding next two lines of code:
 ```C#
 builder.Services.AddSnowflakeUniqueId(options =>
 {
-    options.DataCenterId = 1;
+    options.DataCenterId = 1; // Its best if you read the value from the appsettings.json file
 });
 ```
 
-### The Complete Example:
+### The Complete Asp.NET Core Example:
 ```C#
+using Microsoft.AspNetCore.Builder;
+using SnowflakeId.Core;
+using SnowflakeId.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSnowflakeUniqueId(options =>
 {
@@ -39,45 +41,52 @@ builder.Services.AddSnowflakeUniqueId(options =>
 
 var app = builder.Build();
 
-app.MapGet("/", (ISnowflakeService snowflakeService, ISnowflakeIdProvider snowflakeIdProvider) =>
+app.MapGet("/", (ISnowflakeService snowflakeService) =>
 {
     long generatingId = snowflakeService.GenerateSnowflakeId();
-    SnowflakeIdResult sn = snowflakeIdProvider.GetDateTimeBySnowflakeId(generatingId);
+    DateTime generatedAt = snowflakeService.GetGeneratedDateTimeBySnowflakeId(generatingId);
+    int dataCenterId = snowflakeService.GetDataCenterIdBySnowflakId(generatingId);
 
-
-    return $"The genrated Id is: { generatingId } - and is genrated at { sn.GeneratedDateTime }";
+    return $"The genrated Id is: { generatingId } - and is genrated at: { generatedAt } - at Data Center Id: {dataCenterId}";
 });
 
 app.Run();
 ```
+
 And here is the result if you run the app:
-![aspsnow](https://user-images.githubusercontent.com/18530495/210797780-f69c14c8-7158-4daa-bba0-36b313852026.JPG)
+![image](https://github.com/Shoogn/SnowflakeId/assets/18530495/6d05dcd7-4a87-4fb9-86a7-bfd79aca7c80)
 
 
 ---
-### With Console Application
+### With Console Application Or any other .NET application:
 ```C#
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using SnowflakeId.Core;
-using SnowflakeId.Core.DependencyInjection;
-using SnowflakeId.Provider;
+using SnowflakeId.DependencyInjection;
+using System;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((_, services) =>
     {
         services.AddSnowflakeUniqueId(options =>
         {
-            options.DataCenterId = 1;
+            options.DataCenterId = 7;
         });
     }).Build();
 
 var idServive = host.Services.GetRequiredService<ISnowflakeService>();
-var idProvider = host.Services.GetRequiredService<ISnowflakeIdProvider>();
 
 var uniqueId = idServive.GenerateSnowflakeId();
+Console.WriteLine("The unique Id is: {0}", uniqueId);
+Console.WriteLine("*******************************");
 
-var generatedAt = idProvider.GetDateTimeBySnowflakeId(uniqueId);
+var generatedAt = idServive.GetGeneratedDateTimeBySnowflakeId(uniqueId);
+Console.WriteLine("The Id is: {0} and is generated At: {1}", uniqueId, generatedAt);
 
-Console.WriteLine("The Id is: {0} and is generated At: {1}", generatedAt.Id, generatedAt.GeneratedDateTime);
+var dataCenterId = idServive.GetDataCenterIdBySnowflakId(uniqueId);
+Console.WriteLine("The id is generated at data center has id: {0}", dataCenterId);
+
 Console.ReadLine();
 ```
-
+As you can see from the previous code, you can generate a new id, then you can query at which time the id is generated, and lastly at which data center id is saved.
