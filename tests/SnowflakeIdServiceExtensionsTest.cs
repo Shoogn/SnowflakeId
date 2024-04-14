@@ -8,6 +8,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Moq;
 using SnowflakeId.Core;
 using SnowflakeId.DependencyInjection;
 
@@ -38,6 +39,23 @@ namespace SnowflakeId.Tests
 
             Assert.NotNull(snowflakeService);
             Assert.Equal(1, snowflakeIdOption.DataCenterId);
+        }
+
+        [Fact]
+        public void Can_Replace_SnowflakeId_Default_Registration_By_Creating_Object_That_Implement_ISnowflakeService()
+        {
+            var services = new ServiceCollection();
+            services.AddScoped(typeof(ISnowflakeService), sp => Mock.Of<ISnowflakeService>());
+
+            services.AddSnowflakeUniqueId(s => s.DataCenterId = 1);
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            var snowflakeId = services.FirstOrDefault(desc => desc.ServiceType ==  typeof(ISnowflakeService));
+
+            Assert.NotNull(snowflakeId);
+            Assert.Equal(ServiceLifetime.Scoped, snowflakeId.Lifetime);
+           // Assert.IsType<SnowflakeIdService>(serviceProvider.GetRequiredService<ISnowflakeService>());
         }
 
         [Fact]
