@@ -1,6 +1,8 @@
 ### SnowflakeId
 This is the implementation of twitter's snowflakeId algorithm in C# programming language
 
+---
+
 ### Get Started
 SnowflakeId is a library that can help you to generate a unique Id, specifically for those who are working in a Distributed Systems.
 The currently version is version 3.0.0, and there are break changes in this version when you upgrade from an older versions so be careful when you upgrade to version 3.0.0
@@ -26,6 +28,7 @@ builder.Services.AddSnowflakeUniqueId(options =>
     options.DataCenterId = 1; // Its best if you read the value from the appsettings.json file
 });
 ```
+---
 
 ### The Complete Asp.NET Core Example:
 ```C#
@@ -55,7 +58,6 @@ app.Run();
 
 And here is the result if you run the app:
 ![image](https://github.com/Shoogn/SnowflakeId/assets/18530495/6d05dcd7-4a87-4fb9-86a7-bfd79aca7c80)
-
 
 ---
 ### With Console Application Or any other .NET application:
