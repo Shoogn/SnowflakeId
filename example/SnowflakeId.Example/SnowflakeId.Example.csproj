@@ -12,9 +12,7 @@
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
 	</ItemGroup>
 
-
 	<ItemGroup>
-    <ProjectReference Include="..\..\src\core\SnowflakeId.Core.csproj" />
-  </ItemGroup>
-
+		<ProjectReference Include="..\..\src\core\SnowflakeId.Core.csproj" />
+	</ItemGroup>
 </Project>

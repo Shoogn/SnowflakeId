@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\core\SnowflakeId.Core.csproj" />
+    <ProjectReference Include="..\..\src\core\SnowflakeId.Core.csproj" />
   </ItemGroup>
 
 </Project>
