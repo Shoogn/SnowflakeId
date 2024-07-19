@@ -8,6 +8,8 @@
 
 
 using System;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace SnowflakeId.Core
 {
@@ -21,6 +23,15 @@ namespace SnowflakeId.Core
         /// </summary>
         /// <returns>A new unique number that has a long type.</returns>
         long GenerateSnowflakeId();
+
+
+        /// <summary>
+        /// Generate new unique number, it's length is 19 digits asynchrony.
+        /// </summary>
+        /// <param name="cancellationToken">cancellationToken</param>
+        /// <returns>A new unique number that has a long type.</returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        Task<long> GenerateSnowflakeIdAsync(CancellationToken cancellationToken =default);
 
         /// <summary>
         /// A method caculated the generate date time for a given generated snowflake id.
@@ -55,6 +66,6 @@ namespace SnowflakeId.Core
         /// </summary>
         /// <param name="snowflakeId">snowflakeId.</param>
         /// <returns>Data center id which has int data type.</returns>
-        int GetDataCenterIdBySnowflakId(long snowflakeId);
+        int GetDataCenterIdBySnowflakeId(long snowflakeId);
     }
 }

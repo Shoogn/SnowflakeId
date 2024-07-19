@@ -21,7 +21,7 @@ namespace SnowflakeId.Tests
         public void AddSnowflakeUniqueId_ThrowArgumentNullException_With_Null_SnowflakOptions()
         {
             var services = new ServiceCollection();
-
+            services.AddLogging();
 
             Assert.Throws<ArgumentNullException>(() => services.AddSnowflakeUniqueId(null));
         }
@@ -30,6 +30,7 @@ namespace SnowflakeId.Tests
         public void Can_Add_SnowflakeId_To_Service_Collections_With_SnowflakOptions()
         {
             var services = new ServiceCollection();
+            services.AddLogging();
             services.AddSnowflakeUniqueId(s => s.DataCenterId = 1);
 
             var serviceProvider = services.BuildServiceProvider();
@@ -45,6 +46,7 @@ namespace SnowflakeId.Tests
         public void Can_Replace_SnowflakeId_Default_Registration_By_Creating_Object_That_Implement_ISnowflakeService()
         {
             var services = new ServiceCollection();
+            services.AddLogging();
             services.AddScoped(typeof(ISnowflakeService), sp => Mock.Of<ISnowflakeService>());
 
             services.AddSnowflakeUniqueId(s => s.DataCenterId = 1);
@@ -62,7 +64,7 @@ namespace SnowflakeId.Tests
         public void AddSnowflakeUniqueId_Allow_Chaining()
         {
             var services = new ServiceCollection();
-
+            services.AddLogging();
             Assert.Same(services, services.AddSnowflakeUniqueId(_ => { }));
         }
     }

@@ -31,7 +31,7 @@ var generatedAt = idServive.GetGeneratedDateTimeBySnowflakeId(uniqueId);
 
 Console.WriteLine("The Id is: {0} and is generated At: {1}", uniqueId, generatedAt);
 
-var dataCenterId = idServive.GetDataCenterIdBySnowflakId(uniqueId);
+var dataCenterId = idServive.GetDataCenterIdBySnowflakeId(uniqueId);
 Console.WriteLine("The id is generated at data center has id: {0}", dataCenterId);
 
 Console.ReadLine();

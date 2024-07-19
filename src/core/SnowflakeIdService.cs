@@ -7,8 +7,12 @@
  */
 
 
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SnowflakeId.Core
 {
@@ -21,43 +25,24 @@ namespace SnowflakeId.Core
         private long _sequence = 0L;
 
         // result is 22
-        const int _timeStampShift = SnowflakeIdOptionBuilder.TotalBits - SnowflakeIdOptionBuilder.EpochBits;
+        const int _timeStampShift = SnowflakeIdConfig.TotalBits - SnowflakeIdConfig.EpochBits;
 
         // result is 12
-        const int _machaineIdShift = SnowflakeIdOptionBuilder.TotalBits - SnowflakeIdOptionBuilder.EpochBits - SnowflakeIdOptionBuilder.MachineIdBits;
+        const int _machaineIdShift = SnowflakeIdConfig.TotalBits - SnowflakeIdConfig.EpochBits - SnowflakeIdConfig.MachineIdBits;
 
         private readonly SnowflakOptions _snowflakOptions;
+        private readonly ILogger<SnowflakeIdService> _logger;
 
         /// <summary>
         /// When generating the Id <see cref="SnowflakeIdService"/> I use the  Epoch that start at 1970 Jan 1s ( Unix Time )
         /// </summary>
         public static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-
-        public SnowflakeIdService(IOptions<SnowflakOptions> options)
+        private readonly static SemaphoreSlim _sem = new SemaphoreSlim(1);
+        public SnowflakeIdService(IOptions<SnowflakOptions> options, ILogger<SnowflakeIdService> logger)
         {
             _snowflakOptions = options.Value;
+            _logger = logger ?? new NullLogger<SnowflakeIdService>();
         }
-
-        #region Utilities
-
-        private long getTimestamp()
-        {
-            return (long)(DateTime.UtcNow - UnixEpoch).TotalMilliseconds;
-        }
-
-        private long waitToGetNextMillis(long currentTimestamp)
-        {
-            while (currentTimestamp == _lastTimestamp)
-            {
-                currentTimestamp = getTimestamp();
-            }
-            return currentTimestamp;
-        }
-
-        #endregion
-
-
-        #region Methods
 
         /// <summary>
         /// Generate new unique number, it's length is 19 digits.
@@ -71,6 +56,7 @@ namespace SnowflakeId.Core
 
                 if (currentTimestamp < _lastTimestamp)
                 {
+                    _logger.LogError("error in the server clock, thecurrent timestamp should be bigger than generated one, current timestamp is: {0}, and the last generated timestamp is: {1}", currentTimestamp, _lastTimestamp);
                     throw new InvalidOperationException("Error_In_The_Server_Clock");
                 }
 
@@ -78,7 +64,7 @@ namespace SnowflakeId.Core
                 {
                     // generate a new timestamp when the _sequence is reached the ( 4096 - 1 )
 
-                    _sequence = (_sequence + 1) & SnowflakeIdOptionBuilder.MaxSequenceId;
+                    _sequence = (_sequence + 1) & SnowflakeIdConfig.MaxSequenceId;
 
                     if (_sequence == 0)
                     {
@@ -93,11 +79,59 @@ namespace SnowflakeId.Core
                 _lastTimestamp = currentTimestamp;
 
                 long result = (currentTimestamp << _timeStampShift) | ((long)_snowflakOptions.DataCenterId << _machaineIdShift) | (_sequence);
-
+                _logger.LogInformation("the gnerated unique id is {0}", result);
                 return result;
             }
         }
 
+        /// <summary>
+        /// Generate new unique number, it's length is 19 digits asynchrony.
+        /// </summary>
+        /// <param name="cancellationToken">cancellationToken</param>
+        /// <returns>A new unique number that has a long type.</returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public virtual Task<long> GenerateSnowflakeIdAsync(CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                _sem.Wait(cancellationToken);
+                long currentTimestamp = getTimestamp();
+
+                if (currentTimestamp < _lastTimestamp)
+                {
+                    _logger.LogError("error in the server clock, thecurrent timestamp should be bigger than generated one, current timestamp is: {0}, and the last generated timestamp is: {1}", currentTimestamp, _lastTimestamp);
+                    throw new InvalidOperationException("Error_In_The_Server_Clock");
+                }
+
+                if (currentTimestamp == _lastTimestamp)
+                {
+                    // generate a new timestamp when the _sequence is reached the ( 4096 - 1 )
+
+                    _sequence = (_sequence + 1) & SnowflakeIdConfig.MaxSequenceId;
+
+                    if (_sequence == 0)
+                    {
+                        currentTimestamp = waitToGetNextMillis(currentTimestamp);
+                    }
+                }
+                else
+                {
+                    _sequence = 0;
+                }
+
+                _lastTimestamp = currentTimestamp;
+
+                long result = (currentTimestamp << _timeStampShift) | ((long)_snowflakOptions.DataCenterId << _machaineIdShift) | (_sequence);
+                _logger.LogInformation("the gnerated unique id is {0}", result);
+                return Task.FromResult(result);
+            }
+            finally
+            {
+                _sem.Release();
+            }
+
+
+        }
 
         /// <summary>
         /// A method caculated the generate date time for a given generated snowflake id.
@@ -172,7 +206,7 @@ namespace SnowflakeId.Core
         /// </summary>
         /// <param name="snowflakeId">snowflakeId.</param>
         /// <returns>Data center id which has int data type.</returns>
-        public virtual int GetDataCenterIdBySnowflakId(long snowflakeId)
+        public virtual int GetDataCenterIdBySnowflakeId(long snowflakeId)
         {
             if (snowflakeId <= 0)
             {
@@ -185,10 +219,20 @@ namespace SnowflakeId.Core
             return dataCenterId;
 
         }
-        #endregion
 
 
+        private long getTimestamp()
+        {
+            return (long)(DateTime.UtcNow - UnixEpoch).TotalMilliseconds;
+        }
 
-
+        private long waitToGetNextMillis(long currentTimestamp)
+        {
+            while (currentTimestamp == _lastTimestamp)
+            {
+                currentTimestamp = getTimestamp();
+            }
+            return currentTimestamp;
+        }
     }
 }

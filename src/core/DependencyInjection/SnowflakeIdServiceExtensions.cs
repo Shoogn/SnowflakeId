@@ -10,6 +10,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using SnowflakeId.Core;
+using Microsoft.Extensions.Logging.Abstractions;
 
 
 namespace SnowflakeId.DependencyInjection

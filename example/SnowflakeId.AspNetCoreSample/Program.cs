@@ -15,7 +15,7 @@ app.MapGet("/", (ISnowflakeService snowflakeService) =>
 {
     long generatingId = snowflakeService.GenerateSnowflakeId();
     DateTime generatedAt = snowflakeService.GetGeneratedDateTimeBySnowflakeId(generatingId);
-    int dataCenterId = snowflakeService.GetDataCenterIdBySnowflakId(generatingId);
+    int dataCenterId = snowflakeService.GetDataCenterIdBySnowflakeId(generatingId);
 
 
     return $"The genrated Id is: { generatingId } - and is genrated at: { generatedAt } - at Data Center Id: {dataCenterId}";
