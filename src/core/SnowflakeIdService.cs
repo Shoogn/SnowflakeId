@@ -1,11 +1,4 @@
-﻿/*
-                        GNU GENERAL PUBLIC LICENSE
-                          Version 3, 29 June 2007
- Copyright (C) 2022 Mohammed Ahmed Hussien babiker Free Software Foundation, Inc. <https://fsf.org/>
- Everyone is permitted to copy and distribute verbatim copies
- of this license document, but changing it is not allowed.
- */
-
+﻿// Read more about the licenses under the root of the project in the LICENSE.txt file.
 
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -16,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SnowflakeId.Core
 {
-    public class SnowflakeIdService : ISnowflakeService
+    public class SnowflakeIdService : ISnowflakeService, IDisposable
     {
         // Lock Token
         private readonly object threadLock = new object();
@@ -37,7 +30,8 @@ namespace SnowflakeId.Core
         /// When generating the Id <see cref="SnowflakeIdService"/> I use the  Epoch that start at 1970 Jan 1s ( Unix Time )
         /// </summary>
         public static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-        private readonly static SemaphoreSlim _sem = new SemaphoreSlim(1);
+
+        private bool _disposed;
         public SnowflakeIdService(IOptions<SnowflakOptions> options, ILogger<SnowflakeIdService> logger)
         {
             _snowflakOptions = options.Value;
@@ -92,14 +86,15 @@ namespace SnowflakeId.Core
         /// <exception cref="InvalidOperationException"></exception>
         public virtual Task<long> GenerateSnowflakeIdAsync(CancellationToken cancellationToken = default)
         {
+            SemaphoreSlim sem = new SemaphoreSlim(1, 1);
             try
             {
-                _sem.Wait(cancellationToken);
+                sem.Wait(cancellationToken);
                 long currentTimestamp = getTimestamp();
 
                 if (currentTimestamp < _lastTimestamp)
                 {
-                    _logger.LogError("error in the server clock, thecurrent timestamp should be bigger than generated one, current timestamp is: {0}, and the last generated timestamp is: {1}", currentTimestamp, _lastTimestamp);
+                    _logger.LogError("error in the server clock, the current timestamp should be bigger than generated one, current timestamp is: {0}, and the last generated timestamp is: {1}", currentTimestamp, _lastTimestamp);
                     throw new InvalidOperationException("Error_In_The_Server_Clock");
                 }
 
@@ -127,7 +122,7 @@ namespace SnowflakeId.Core
             }
             finally
             {
-                _sem.Release();
+                sem.Release();
             }
 
 
@@ -233,6 +228,24 @@ namespace SnowflakeId.Core
                 currentTimestamp = getTimestamp();
             }
             return currentTimestamp;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // no-op.
+                }
+                _disposed = true;
+            }
         }
     }
 }
