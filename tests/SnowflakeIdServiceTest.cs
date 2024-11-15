@@ -25,7 +25,7 @@ namespace SnowflakeId.Tests
         }
 
         [Fact]
-        public async void Can_Genertate_UniqueId_Asynchrony()
+        public async Task Can_Genertate_UniqueId_Asynchrony()
         {
             var services = new ServiceCollection();
             services.AddLogging();

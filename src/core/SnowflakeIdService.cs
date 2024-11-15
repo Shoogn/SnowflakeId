@@ -50,7 +50,7 @@ namespace SnowflakeId.Core
 
                 if (currentTimestamp < _lastTimestamp)
                 {
-                    _logger.LogError("error in the server clock, thecurrent timestamp should be bigger than generated one, current timestamp is: {0}, and the last generated timestamp is: {1}", currentTimestamp, _lastTimestamp);
+                    _logger.LogError("error in the server clock, the current timestamp should be bigger than generated one, current timestamp is: {0}, and the last generated timestamp is: {1}", currentTimestamp, _lastTimestamp);
                     throw new InvalidOperationException("Error_In_The_Server_Clock");
                 }
 

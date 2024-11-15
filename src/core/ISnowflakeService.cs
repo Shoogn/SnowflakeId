@@ -24,7 +24,7 @@ namespace SnowflakeId.Core
         /// <param name="cancellationToken">cancellationToken</param>
         /// <returns>A new unique number that has a long type.</returns>
         /// <exception cref="InvalidOperationException"></exception>
-        Task<long> GenerateSnowflakeIdAsync(CancellationToken cancellationToken =default);
+        Task<long> GenerateSnowflakeIdAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// A method caculated the generate date time for a given generated snowflake id.
