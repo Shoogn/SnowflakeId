@@ -5,11 +5,11 @@ This is the implementation of twitter's snowflakeId algorithm in C# programming 
 
 ### Get Started
 SnowflakeId is a library that can help you to generate a unique Id, specifically for those who are working in a Distributed Systems.
-The currently version is version 3.0.0, and there are break changes in this version when you upgrade from an older versions so be careful when you upgrade to version 3.0.0
+The currently version is version 3.0.1, and there are break changes in this version when you upgrade from an older versions so be careful when you upgrade to version 3.0.1
 
-For any .NET application higher than .Net 6 install the library by using NuGet package command
+For any .NET application target .NET version higher than .Net 6 install the library by using NuGet package command
 ```
-dotnet add package Hussien.SnowflakeId --version 3.0.0
+dotnet add package Hussien.SnowflakeId --version 3.0.1
 ```
 ---
 
