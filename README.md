@@ -91,4 +91,6 @@ Console.WriteLine("The id is generated at data center has id: {0}", dataCenterId
 
 Console.ReadLine();
 ```
-As you can see from the previous code, you can generate a new id, then you can query at which time the id is generated, and lastly at which data center id is saved.
+As you can see from the previous code, you can generate a new id, then you can query at which time the id is generated, and lastly at which data center id is saved .
+See the result of the above console application in the below pic:
+![image](https://github.com/user-attachments/assets/232917a8-f2ca-41dd-8c11-780e53ea65a9)
