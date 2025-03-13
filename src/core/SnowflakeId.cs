@@ -6,7 +6,19 @@ namespace SnowflakeId.Core
 {
     public class SnowflakeId
     {
+        /// <summary>
+        /// Get or set snowflakeId.
+        /// </summary>
         public long Id { get; set; }
+
+        /// <summary>
+        /// Get or set the generation datetime of the snowflakeId.
+        /// </summary>
         public DateTime GeneratedDateTime { get; set; }
+
+        /// <summary>
+        /// Get or set the data centerid.
+        /// </summary>
+        public int DataCenterId { get; set; }
     }
 }

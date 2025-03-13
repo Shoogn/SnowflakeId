@@ -50,14 +50,14 @@ namespace SnowflakeId.Core
 
                 if (currentTimestamp < _lastTimestamp)
                 {
-                    _logger.LogError("error in the server clock, the current timestamp should be bigger than generated one, current timestamp is: {0}, and the last generated timestamp is: {1}", currentTimestamp, _lastTimestamp);
+                    if (_snowflakOptions.UseConsoleLog)
+                        _logger.LogError("error in the server clock, the current timestamp should be bigger than generated one, current timestamp is: {0}, and the last generated timestamp is: {1}", currentTimestamp, _lastTimestamp);
                     throw new InvalidOperationException("Error_In_The_Server_Clock");
                 }
 
                 if (currentTimestamp == _lastTimestamp)
                 {
                     // generate a new timestamp when the _sequence is reached the ( 4096 - 1 )
-
                     _sequence = (_sequence + 1) & SnowflakeIdConfig.MaxSequenceId;
 
                     if (_sequence == 0)
@@ -73,7 +73,8 @@ namespace SnowflakeId.Core
                 _lastTimestamp = currentTimestamp;
 
                 long result = (currentTimestamp << _timeStampShift) | ((long)_snowflakOptions.DataCenterId << _machaineIdShift) | (_sequence);
-                _logger.LogInformation("the gnerated unique id is {0}", result);
+                if (_snowflakOptions.UseConsoleLog)
+                    _logger.LogInformation("the gnerated unique id is {0}", result);
                 return result;
             }
         }
@@ -94,14 +95,14 @@ namespace SnowflakeId.Core
 
                 if (currentTimestamp < _lastTimestamp)
                 {
-                    _logger.LogError("error in the server clock, the current timestamp should be bigger than generated one, current timestamp is: {0}, and the last generated timestamp is: {1}", currentTimestamp, _lastTimestamp);
+                    if (_snowflakOptions.UseConsoleLog)
+                        _logger.LogError("error in the server clock, the current timestamp should be bigger than generated one, current timestamp is: {0}, and the last generated timestamp is: {1}", currentTimestamp, _lastTimestamp);
                     throw new InvalidOperationException("Error_In_The_Server_Clock");
                 }
 
                 if (currentTimestamp == _lastTimestamp)
                 {
                     // generate a new timestamp when the _sequence is reached the ( 4096 - 1 )
-
                     _sequence = (_sequence + 1) & SnowflakeIdConfig.MaxSequenceId;
 
                     if (_sequence == 0)
@@ -117,7 +118,8 @@ namespace SnowflakeId.Core
                 _lastTimestamp = currentTimestamp;
 
                 long result = (currentTimestamp << _timeStampShift) | ((long)_snowflakOptions.DataCenterId << _machaineIdShift) | (_sequence);
-                _logger.LogInformation("the gnerated unique id is {0}", result);
+                if (_snowflakOptions.UseConsoleLog)
+                    _logger.LogInformation("the gnerated unique id is {0}", result);
                 return Task.FromResult(result);
             }
             finally
@@ -147,6 +149,7 @@ namespace SnowflakeId.Core
 
             result.GeneratedDateTime = snowflakeIdGeneratedTime;
             result.Id = snowflakeId;
+            result.DataCenterId = GetDataCenterIdBySnowflakeId(snowflakeId);
             return result;
 
         }
@@ -190,10 +193,10 @@ namespace SnowflakeId.Core
                 return 0L;
             }
 
-            string result = Convert.ToString(snowflakeId, 2).PadLeft(64, '0');
-            string getTimestampInbit = result.Substring(1, 41);
-            long timestamp = Convert.ToInt64(getTimestampInbit, 2);
-            return timestamp;
+            // 41 bits of 1s, will shifted left by 22 bits.
+            long timestampMask = 0x1FFFFFFFFFF; 
+            long timeStamp = (snowflakeId >> _timeStampShift) & timestampMask;
+            return timeStamp;
         }
 
         /// <summary>
@@ -208,11 +211,11 @@ namespace SnowflakeId.Core
                 return 0;
             }
 
-            string result = Convert.ToString(snowflakeId, 2).PadLeft(64, '0');
-            string dataCenterInBits = result.Substring(42, 10);
-            int dataCenterId = Convert.ToInt32(dataCenterInBits, 2);
-            return dataCenterId;
+            // 10 bits mask (0b1111111111) will shifted left by 12 bits.
+            long dataCenterIdMask = 0x3FF; 
 
+            long dataCenterId = (snowflakeId >> _machaineIdShift) & dataCenterIdMask;
+            return (int)dataCenterId;
         }
 
 
