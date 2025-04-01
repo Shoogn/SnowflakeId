@@ -5,11 +5,11 @@ This is the implementation of twitter's snowflakeId algorithm in C# programming 
 
 ### Get Started
 SnowflakeId is a library that can help you to generate a unique Id, specifically for those who are working in a Distributed Systems.
-The currently version is version 3.0.1, and there are break changes in this version when you upgrade from an older versions so be careful when you upgrade to version 3.0.1
+The currently version is version 3.0.1, and there are break changes in this version when you upgrade from an older versions so be careful when you upgrade to version 3.1.0
 
-For any .NET application target .NET version higher than .Net 6 install the library by using NuGet package command
+For any .NET application target .NET version higher than .Net 6.0 install the library by using NuGet package command
 ```
-dotnet add package Hussien.SnowflakeId --version 3.0.1
+dotnet add package Hussien.SnowflakeId --version 3.1.0
 ```
 ---
 
@@ -26,6 +26,7 @@ Second register the Hussine.SnowflakeId library service by adding next two lines
 builder.Services.AddSnowflakeUniqueId(options =>
 {
     options.DataCenterId = 1; // Its best if you read the value from the appsettings.json file
+    options.UseConsoleLog = true; // this is available only on version 3.1.0
 });
 ```
 ---
@@ -40,6 +41,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSnowflakeUniqueId(options =>
 {
     options.DataCenterId = 1;
+    options.UseConsoleLog = false; // this is available only on version 3.1.0
 });
 
 var app = builder.Build();
@@ -74,6 +76,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddSnowflakeUniqueId(options =>
         {
             options.DataCenterId = 7;
+            options.UseConsoleLog = false; // this is available only on version 3.1.0
         });
     }).Build();
 
@@ -93,4 +96,5 @@ Console.ReadLine();
 ```
 As you can see from the previous code, you can generate a new id, then you can query at which time the id is generated, and lastly at which data center id is saved .
 See the result of the above console application in the below pic:
+
 ![image](https://github.com/user-attachments/assets/232917a8-f2ca-41dd-8c11-780e53ea65a9)
