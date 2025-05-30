@@ -1,5 +1,5 @@
 ### SnowflakeId
-This is the implementation of twitter's snowflakeId algorithm in C# programming language
+This is the implementation of snowflakeId algorithm in C# programming language, this algorithm is developed by X formally (Twitter)
 
 ---
 
