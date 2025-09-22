@@ -65,5 +65,25 @@ namespace SnowflakeId.Tests
 
         }
 
+        [Fact]
+        public async Task Can_Genertate_UniqueId_Asynchrony_In_The_Same_Millisecond()
+        {
+            var services = new ServiceCollection();
+            services.AddLogging();
+            services.AddSnowflakeUniqueId(s => s.DataCenterId = 1);
+
+            var serviceProvider = services.BuildServiceProvider();
+            var snowflakeService = serviceProvider.GetRequiredService<ISnowflakeService>();
+
+            var cts = new CancellationTokenSource();
+            var tasks = new List<Task<long>>(500_000);
+            for (int i = 0; i < 50_000; i++)
+                tasks.Add(Task.Run(() => snowflakeService.GenerateSnowflakeIdAsync(cts.Token)));
+
+            var uniqueIds = await Task.WhenAll(tasks);
+            var listUniqeness = uniqueIds.Length != uniqueIds.Distinct().Count();
+            Assert.False(listUniqeness);
+        }
+
     }
 }

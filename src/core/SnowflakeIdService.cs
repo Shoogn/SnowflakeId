@@ -13,6 +13,7 @@ namespace SnowflakeId.Core
     {
         // Lock Token
         private readonly object threadLock = new object();
+        private readonly SemaphoreSlim sem = new SemaphoreSlim(1, 1);
 
         private long _lastTimestamp = -1L;
         private long _sequence = 0L;
@@ -29,13 +30,19 @@ namespace SnowflakeId.Core
         /// <summary>
         /// When generating the Id <see cref="SnowflakeIdService"/> I use the  Epoch that start at 1970 Jan 1s ( Unix Time )
         /// </summary>
-        public static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        public readonly DateTime UnixEpoch;
 
         private bool _disposed;
         public SnowflakeIdService(IOptions<SnowflakOptions> options, ILogger<SnowflakeIdService> logger)
         {
             _snowflakOptions = options.Value;
             _logger = logger ?? new NullLogger<SnowflakeIdService>();
+
+            UnixEpoch = options.Value.CustomEpoch ?? SnowflakeIdConfig.DefaultEpoch;
+            if (_snowflakOptions.DataCenterId < 0 || _snowflakOptions.DataCenterId > SnowflakeIdConfig.MaxDataCenterId)
+            {
+                throw new ArgumentException(string.Format("DataCenterId must be between 0 and {0}", SnowflakeIdConfig.MaxDataCenterId));
+            }
         }
 
         /// <summary>
@@ -51,7 +58,8 @@ namespace SnowflakeId.Core
                 if (currentTimestamp < _lastTimestamp)
                 {
                     if (_snowflakOptions.UseConsoleLog)
-                        _logger.LogError("error in the server clock, the current timestamp should be bigger than generated one, current timestamp is: {0}, and the last generated timestamp is: {1}", currentTimestamp, _lastTimestamp);
+                        _logger.LogError("error in the server clock, the current timestamp should be bigger than generated one, " +
+                            "current timestamp is: {currentTimestamp}, and the last generated timestamp is: {lastTimestamp}", currentTimestamp, _lastTimestamp);
                     throw new InvalidOperationException("Error_In_The_Server_Clock");
                 }
 
@@ -85,12 +93,11 @@ namespace SnowflakeId.Core
         /// <param name="cancellationToken">cancellationToken</param>
         /// <returns>A new unique number that has a long type.</returns>
         /// <exception cref="InvalidOperationException"></exception>
-        public virtual Task<long> GenerateSnowflakeIdAsync(CancellationToken cancellationToken = default)
+        public virtual async Task<long> GenerateSnowflakeIdAsync(CancellationToken cancellationToken = default)
         {
-            SemaphoreSlim sem = new SemaphoreSlim(1, 1);
             try
             {
-                sem.Wait(cancellationToken);
+                await sem.WaitAsync(cancellationToken).ConfigureAwait(false);
                 long currentTimestamp = getTimestamp();
 
                 if (currentTimestamp < _lastTimestamp)
@@ -120,7 +127,7 @@ namespace SnowflakeId.Core
                 long result = (currentTimestamp << _timeStampShift) | ((long)_snowflakOptions.DataCenterId << _machaineIdShift) | (_sequence);
                 if (_snowflakOptions.UseConsoleLog)
                     _logger.LogInformation("the gnerated unique id is {0}", result);
-                return Task.FromResult(result);
+                return result;
             }
             finally
             {
@@ -194,7 +201,7 @@ namespace SnowflakeId.Core
             }
 
             // 41 bits of 1s, will shifted left by 22 bits.
-            long timestampMask = 0x1FFFFFFFFFF; 
+            long timestampMask = 0x1FFFFFFFFFF;
             long timeStamp = (snowflakeId >> _timeStampShift) & timestampMask;
             return timeStamp;
         }
@@ -212,7 +219,7 @@ namespace SnowflakeId.Core
             }
 
             // 10 bits mask (0b1111111111) will shifted left by 12 bits.
-            long dataCenterIdMask = 0x3FF; 
+            long dataCenterIdMask = 0x3FF;
 
             long dataCenterId = (snowflakeId >> _machaineIdShift) & dataCenterIdMask;
             return (int)dataCenterId;

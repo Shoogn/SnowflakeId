@@ -36,5 +36,11 @@ namespace SnowflakeId.Core
         /// 4095
         /// </summary>
         public static readonly int MaxSequenceId = (int)(Math.Pow(2, SequenceBits) - 1);
+
+
+        /// <summary>
+        public static readonly DateTime DefaultEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+        public static readonly int MaxDataCenterId = ((1 << MachineIdBits) - 1);
     }
 }
