@@ -26,6 +26,8 @@ namespace SnowflakeId.Core
 
         private readonly SnowflakOptions _snowflakOptions;
         private readonly ILogger<SnowflakeIdService> _logger;
+        protected readonly int DataCenterId = 1;
+        private static readonly DateTime DefaultEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         /// <summary>
         /// When generating the Id <see cref="SnowflakeIdService"/> I use the  Epoch that start at 1970 Jan 1s ( Unix Time )
@@ -38,10 +40,11 @@ namespace SnowflakeId.Core
             _snowflakOptions = options.Value;
             _logger = logger ?? new NullLogger<SnowflakeIdService>();
 
-            UnixEpoch = options.Value.CustomEpoch ?? SnowflakeIdConfig.DefaultEpoch;
-            if (_snowflakOptions.DataCenterId < 0 || _snowflakOptions.DataCenterId > SnowflakeIdConfig.MaxDataCenterId)
+            UnixEpoch = options.Value.CustomEpoch ?? DefaultEpoch;
+            _snowflakOptions.DataCenterId ??= DataCenterId;
+            if (_snowflakOptions.DataCenterId < 0 || _snowflakOptions.DataCenterId > SnowflakeIdConfig.MaxMachineId)
             {
-                throw new ArgumentException(string.Format("DataCenterId must be between 0 and {0}", SnowflakeIdConfig.MaxDataCenterId));
+                throw new ArgumentException(string.Format("DataCenterId must be between 0 and {0}", SnowflakeIdConfig.MaxMachineId));
             }
         }
 
@@ -59,7 +62,7 @@ namespace SnowflakeId.Core
                 {
                     if (_snowflakOptions.UseConsoleLog)
                         _logger.LogError("error in the server clock, the current timestamp should be bigger than generated one, " +
-                            "current timestamp is: {currentTimestamp}, and the last generated timestamp is: {lastTimestamp}", currentTimestamp, _lastTimestamp);
+                            "current timestamp is: {CurrentTimestamp}, and the last generated timestamp is: {LastTimestamp}", currentTimestamp, _lastTimestamp);
                     throw new InvalidOperationException("Error_In_The_Server_Clock");
                 }
 
@@ -82,7 +85,7 @@ namespace SnowflakeId.Core
 
                 long result = (currentTimestamp << _timeStampShift) | ((long)_snowflakOptions.DataCenterId << _machaineIdShift) | (_sequence);
                 if (_snowflakOptions.UseConsoleLog)
-                    _logger.LogInformation("the gnerated unique id is {0}", result);
+                    _logger.LogInformation("the gnerated unique id is {UniqueId}", result);
                 return result;
             }
         }
@@ -103,7 +106,8 @@ namespace SnowflakeId.Core
                 if (currentTimestamp < _lastTimestamp)
                 {
                     if (_snowflakOptions.UseConsoleLog)
-                        _logger.LogError("error in the server clock, the current timestamp should be bigger than generated one, current timestamp is: {0}, and the last generated timestamp is: {1}", currentTimestamp, _lastTimestamp);
+                        _logger.LogError("error in the server clock, the current timestamp should be bigger than generated one, current timestamp is: {CurrentTimestamp}, " +
+                            "and the last generated timestamp is: {LastTimestamp}", currentTimestamp, _lastTimestamp);
                     throw new InvalidOperationException("Error_In_The_Server_Clock");
                 }
 
@@ -126,7 +130,7 @@ namespace SnowflakeId.Core
 
                 long result = (currentTimestamp << _timeStampShift) | ((long)_snowflakOptions.DataCenterId << _machaineIdShift) | (_sequence);
                 if (_snowflakOptions.UseConsoleLog)
-                    _logger.LogInformation("the gnerated unique id is {0}", result);
+                    _logger.LogInformation("the gnerated unique id is {UniqueId}", result);
                 return result;
             }
             finally

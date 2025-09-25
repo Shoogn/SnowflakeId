@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SnowflakeId.Core;
 using SnowflakeId.DependencyInjection;
-using System.Collections.Generic;
 
 namespace SnowflakeId.Tests
 {
@@ -85,5 +84,23 @@ namespace SnowflakeId.Tests
             Assert.False(listUniqeness);
         }
 
+
+        [Fact]
+        public void DataCenterId_Is_Equal_To_One_When_Registering_SnowflakeId_WithoutOptions()
+        {
+            var services = new ServiceCollection();
+            services.AddLogging();
+            services.AddSnowflakeUniqueId();
+
+            var serviceProvider = services.BuildServiceProvider();
+            var snowflakeService = serviceProvider.GetRequiredService<ISnowflakeService>();
+
+            var id = snowflakeService.GenerateSnowflakeId();
+            var dataCenterId = snowflakeService.GetDataCenterIdBySnowflakeId(id);
+            Assert.IsType<int>(dataCenterId);
+            Assert.Equal(1, dataCenterId);
+        }
+
+  
     }
 }

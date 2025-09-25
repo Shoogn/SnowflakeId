@@ -10,20 +10,21 @@ namespace SnowflakeId.DependencyInjection
     public static class SnowflakeIdServiceExtensions
     {
         public static IServiceCollection AddSnowflakeUniqueId(this IServiceCollection services, 
-            Action<SnowflakOptions> setupAction)
+            Action<SnowflakOptions> setupAction = null)
         {
             if (services == null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
 
-            if (setupAction == null)
-            {
-                throw new ArgumentNullException(nameof(setupAction));
-            }
+            services.AddOptions();
+            var o = new SnowflakOptions();
+            services.AddSingleton(o);
+            setupAction?.Invoke(o);
 
             services.TryAddScoped<ISnowflakeService, SnowflakeIdService>();
-            services.Configure(setupAction);
+            if (setupAction != null)
+                services.Configure(setupAction);
             return services;
         }
     }

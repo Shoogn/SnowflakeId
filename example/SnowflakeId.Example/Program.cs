@@ -15,10 +15,12 @@ using System;
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((_, services) =>
     {
-        services.AddSnowflakeUniqueId(options =>
-        {
-            options.DataCenterId = 7;
-        });
+        services.AddSnowflakeUniqueId(
+        //    options =>
+        //{
+        //    options.DataCenterId = 7;
+        //}
+        );
     }).Build();
 
 var idServive = host.Services.GetRequiredService<ISnowflakeService>();
