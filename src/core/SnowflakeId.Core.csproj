@@ -42,7 +42,7 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(ExtensionsVersion)" />
 	</ItemGroup>
 	<ItemGroup>
-		<InternalsVisibleTo Include="SnowflakeId.Tests"/>
+		<InternalsVisibleTo Include="SnowflakeId.Tests" />
 	</ItemGroup>
 
 </Project>

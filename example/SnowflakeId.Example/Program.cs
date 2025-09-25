@@ -8,18 +8,32 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SnowflakeId.Core;
+using SnowflakeId.Core.Events;
 using SnowflakeId.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((_, services) =>
     {
-        services.AddSnowflakeUniqueId(
-        //    options =>
-        //{
-        //    options.DataCenterId = 7;
-        //}
+        services.AddSnowflakeUniqueId( options =>
+        {
+            options.DataCenterId = 7;
+            options.Events = new SnowflakeIdEvents
+            {
+                OnCreatedSnowflakeId = context =>
+                {
+                    Console.WriteLine("OnCreatedSnowflakeId --> The Id is: {0} and is generated At: {1}", context.Id, context.GeneratedDateTime);
+                    return Task.CompletedTask;
+                },
+                OnCreatingSnowflakeId = context =>
+                {
+                    Console.WriteLine("OnCreatingSnowflakeId --> Generating Id at data center has id: {0}", context.DataCenterId);
+                    return Task.CompletedTask;
+                }
+            };
+        }
         );
     }).Build();
 

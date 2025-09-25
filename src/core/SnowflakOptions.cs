@@ -1,5 +1,6 @@
 ﻿// Read more about the licenses under the root of the project in the LICENSE.txt file.
 
+using SnowflakeId.Core.Events;
 using System;
 
 namespace SnowflakeId.Core
@@ -22,5 +23,10 @@ namespace SnowflakeId.Core
         /// Get or set the custom epoch, the default value of this property with set to epoch is 1970 Jan 1s ( Unix Time ) if value is null.
         /// </summary>
         public DateTime? CustomEpoch { get; set; }
+
+        /// <summary>
+        /// events
+        public SnowflakeIdEvents Events { get; set; } = new SnowflakeIdEvents();
+
     }
 }

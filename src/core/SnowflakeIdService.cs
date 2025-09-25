@@ -3,6 +3,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
+using SnowflakeId.Core.Events;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace SnowflakeId.Core
         private readonly ILogger<SnowflakeIdService> _logger;
         protected readonly int DataCenterId = 1;
         private static readonly DateTime DefaultEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
 
         /// <summary>
         /// When generating the Id <see cref="SnowflakeIdService"/> I use the  Epoch that start at 1970 Jan 1s ( Unix Time )
@@ -56,6 +58,13 @@ namespace SnowflakeId.Core
         {
             lock (threadLock)
             {
+                var idCreatingContext = new SnowflakeIdCreatingContext
+                {
+                    DataCenterId = _snowflakOptions.DataCenterId.Value,
+                    DefaultEpoch = UnixEpoch
+                };
+                _snowflakOptions.Events.CreatingSnowflakeId(idCreatingContext).GetAwaiter().GetResult();
+
                 long currentTimestamp = getTimestamp();
 
                 if (currentTimestamp < _lastTimestamp)
@@ -86,6 +95,17 @@ namespace SnowflakeId.Core
                 long result = (currentTimestamp << _timeStampShift) | ((long)_snowflakOptions.DataCenterId << _machaineIdShift) | (_sequence);
                 if (_snowflakOptions.UseConsoleLog)
                     _logger.LogInformation("the gnerated unique id is {UniqueId}", result);
+
+                var idCreatedContext = new SnowflakeIdCreatedContext
+                {
+                    Id = result,
+                    GeneratedDateTime = GetDateTimeBySecondsSinceUnixEpoch(GetSecondsSinceUnixEpochFromId(result)),
+                    DataCenterId = _snowflakOptions.DataCenterId.Value,
+                    DefaultEpoch = UnixEpoch
+                };
+                _snowflakOptions.Events.CreatedSnowflakeId(idCreatedContext).GetAwaiter().GetResult();
+
+
                 return result;
             }
         }
@@ -101,6 +121,13 @@ namespace SnowflakeId.Core
             try
             {
                 await sem.WaitAsync(cancellationToken).ConfigureAwait(false);
+                var idCreatingContext = new SnowflakeIdCreatingContext
+                {
+                    DataCenterId = _snowflakOptions.DataCenterId.Value,
+                    DefaultEpoch = UnixEpoch
+                };
+                await _snowflakOptions.Events.CreatingSnowflakeId(idCreatingContext).ConfigureAwait(false);
+
                 long currentTimestamp = getTimestamp();
 
                 if (currentTimestamp < _lastTimestamp)
@@ -131,6 +158,17 @@ namespace SnowflakeId.Core
                 long result = (currentTimestamp << _timeStampShift) | ((long)_snowflakOptions.DataCenterId << _machaineIdShift) | (_sequence);
                 if (_snowflakOptions.UseConsoleLog)
                     _logger.LogInformation("the gnerated unique id is {UniqueId}", result);
+
+                var idCreatedContext = new SnowflakeIdCreatedContext
+                {
+                    Id = result,
+                    GeneratedDateTime = GetDateTimeBySecondsSinceUnixEpoch(GetSecondsSinceUnixEpochFromId(result)),
+                    DataCenterId = _snowflakOptions.DataCenterId.Value,
+                    DefaultEpoch = UnixEpoch
+
+                };
+                await _snowflakOptions.Events.CreatedSnowflakeId(idCreatedContext).ConfigureAwait(false);
+
                 return result;
             }
             finally
