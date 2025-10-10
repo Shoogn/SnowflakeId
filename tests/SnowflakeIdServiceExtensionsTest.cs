@@ -17,13 +17,21 @@ namespace SnowflakeId.Tests
     public class SnowflakeIdServiceExtensionsTest
     {
         [Fact]
-
-        public void AddSnowflakeUniqueId_ThrowArgumentNullException_With_Null_SnowflakOptions()
+        public void Can_Add_SnowflakId_To_Service_Collection_Without_SnowflakeId_Option()
         {
             var services = new ServiceCollection();
             services.AddLogging();
+            services.AddSnowflakeUniqueId();
 
-            Assert.Throws<ArgumentNullException>(() => services.AddSnowflakeUniqueId(null));
+            var serviceProvider = services.BuildServiceProvider();
+
+            var snowflakeId = services.FirstOrDefault(desc => desc.ServiceType == typeof(ISnowflakeService));
+            var snowflakeIdOptionGetter = serviceProvider.GetRequiredService<IOptions<SnowflakOptions>>();
+            var snowflakeIdOption = snowflakeIdOptionGetter.Value;
+
+            Assert.NotNull(snowflakeId);
+            Assert.Equal(ServiceLifetime.Scoped, snowflakeId.Lifetime);
+            Assert.Null(snowflakeIdOption.DataCenterId);
         }
 
         [Fact]
@@ -57,7 +65,6 @@ namespace SnowflakeId.Tests
 
             Assert.NotNull(snowflakeId);
             Assert.Equal(ServiceLifetime.Scoped, snowflakeId.Lifetime);
-           // Assert.IsType<SnowflakeIdService>(serviceProvider.GetRequiredService<ISnowflakeService>());
         }
 
         [Fact]

@@ -29,6 +29,7 @@ namespace SnowflakeId.Core
 
         /// <summary>
         /// 1023
+        /// ((1 << MachineIdBits) - 1);
         /// </summary>
         public static readonly int MaxMachineId = (int)(Math.Pow(2, MachineIdBits) - 1);
 
