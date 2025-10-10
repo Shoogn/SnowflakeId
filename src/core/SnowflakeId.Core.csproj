@@ -8,16 +8,13 @@
 		<Authors>Mohammed Ahmed Hussien</Authors>
 		<PackageProjectUrl>https://github.com/Shoogn/SnowflakeId</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Shoogn/SnowflakeId</RepositoryUrl>
-		<Version>3.0.1</Version>
+		<Version>3.2.0</Version>
 		<RepositoryType>git</RepositoryType>
-		<PackageTags>SnowflakeId, UniqueSnowflakeId, UniqueId</PackageTags>
+		<PackageTags>SnowflakeId, UniqueSnowflakeId, UniqueId, Primary Keys</PackageTags>
 		<NeutralLanguage>en-SD</NeutralLanguage>
 		<Description>
-			This package implements the twitter's snowflakeId algorithm,
-			the source code is written in C# programming language,
-			and the main benefits of this library is to help anyone
-			wroks with Distrbuted Systems to generate a unique Ids for these Systems or
-			for Primary Keys is the RDMS such as SQL Server, Oracle, MySQL; or for any other situation that reuired unique Ids.
+			This is an implementation of snowflakeId algorithm in C# programming language, this algorithm is developed by X formally (Twitter), the source code is written in C# programming language,
+			and the main benefits of this library is to help anyone wroks with Distrbuted Systems to generate a unique Ids for these Systems or for Primary Keys is the [RDMS] such as SQL Server, Oracle, MySQL; or for any other situation that required unique Ids.
 		</Description>
 	</PropertyGroup>
 
