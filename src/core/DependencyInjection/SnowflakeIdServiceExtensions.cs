@@ -4,6 +4,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using SnowflakeId.Core;
+using Microsoft.Extensions.Configuration;
 
 namespace SnowflakeId.DependencyInjection
 {
@@ -27,5 +28,25 @@ namespace SnowflakeId.DependencyInjection
                 services.Configure(setupAction);
             return services;
         }
+
+
+        public static IServiceCollection AddSnowflakeUniqueId(this IServiceCollection services, 
+            IConfiguration configuration)
+        {
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+            services.AddOptions();
+            var snowflakeIdSection = configuration.GetSection("SnowflakeId");
+            if (!snowflakeIdSection.Exists())
+            {
+                throw new ArgumentException("The SnowflakeId section is not found in the configuration.");
+            }
+            services.Configure<SnowflakOptions>(snowflakeIdSection);
+            services.TryAddScoped<ISnowflakeService, SnowflakeIdService>();
+            return services;
+        }
+
     }
 }

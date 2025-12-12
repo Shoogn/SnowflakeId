@@ -4,10 +4,7 @@ using SnowflakeId.DependencyInjection;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddSnowflakeUniqueId(options =>
-{
-    options.DataCenterId = 1;
-});
+builder.Services.AddSnowflakeUniqueId(builder.Configuration);
 
 var app = builder.Build();
 
