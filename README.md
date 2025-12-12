@@ -5,11 +5,11 @@ This is an implementation of snowflakeId algorithm in C# programming language, t
 
 ### Get Started
 Hussien.SnowflakeId is a library that can help you to generate a unique Id, specifically for those who are working in a Distributed Systems.
-The current version of this library is 3.2.0, and it supports net6.0, net7.0, net8.0 and net9.0.
+The current version of this library is 3.3.0, and it supports net6.0, net7.0, net8.0, net9.0 and net10.0.
 
 To strat using Hussien.SnowflakeId library you can install it by using Nugget Mackage Manger or by installing it from the command line  via `dotnet cli` by running the following command:
 ```
-dotnet add package Hussien.SnowflakeId --version 3.2.0
+dotnet add package Hussien.SnowflakeId --version 3.3.0
 ```
 |   Package      |    Varsion   |    Downloads   |
 | ------- | ----- | ----- |
@@ -30,7 +30,7 @@ Second register the Hussine.SnowflakeId library service by adding next two lines
 builder.Services.AddSnowflakeUniqueId(options =>
 {
     options.DataCenterId = 1;      // in production get this value from the appsettings.json file.
-    options.UseConsoleLog = true;  // this is available only on version 3.1.0.
+    options.UseConsoleLog = true;  // this is available only on version 3.1.0 and above.
 });
 ```
 ---
@@ -45,7 +45,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSnowflakeUniqueId(options =>
 {
     options.DataCenterId = 1;             // in production get this value from the appsettings.json file.
-    options.UseConsoleLog = false;        // this is available only on version 3.1.0.
+    options.UseConsoleLog = false;        // this is available only on version 3.1.0 and above.
 });
 
 var app = builder.Build();
@@ -80,7 +80,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddSnowflakeUniqueId(options =>
         {
             options.DataCenterId = 7;
-            options.UseConsoleLog = false; // this is available only on version 3.1.0
+            options.UseConsoleLog = false; // this is available only on version 3.1.0 and above.
 
             // These are two new events are added to version 3.2.0,
             // one is firing before generating Id and the other one after generating id.
