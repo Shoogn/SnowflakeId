@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 		<PackageId>Hussien.SnowflakeId</PackageId>
@@ -8,7 +8,7 @@
 		<Authors>Mohammed Ahmed Hussien</Authors>
 		<PackageProjectUrl>https://github.com/Shoogn/SnowflakeId</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/Shoogn/SnowflakeId</RepositoryUrl>
-		<Version>3.2.0</Version>
+		<Version>3.3.0</Version>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>SnowflakeId, UniqueSnowflakeId, UniqueId, Primary Keys</PackageTags>
 		<NeutralLanguage>en-SD</NeutralLanguage>
@@ -23,6 +23,7 @@
 		<Net7Version>7.0.0</Net7Version>
 		<Net8Version>8.0.0</Net8Version>
 		<Net9Version>9.0.0</Net9Version>
+		<Net10Version>10.0.0</Net10Version>
 	</PropertyGroup>
 	
 	<PropertyGroup>
@@ -30,6 +31,7 @@
 		<ExtensionsVersion Condition="'$(TargetFramework)' == 'net7.0'">$(Net7Version)</ExtensionsVersion>
 		<ExtensionsVersion Condition="'$(TargetFramework)' == 'net8.0'">$(Net8Version)</ExtensionsVersion>
 		<ExtensionsVersion Condition="'$(TargetFramework)' == 'net9.0'">$(Net9Version)</ExtensionsVersion>
+		<ExtensionsVersion Condition="'$(TargetFramework)' == 'net10.0'">$(Net10Version)</ExtensionsVersion>
 	</PropertyGroup>
 	
 	<ItemGroup>
@@ -37,6 +39,7 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(ExtensionsVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Options" Version="$(ExtensionsVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(ExtensionsVersion)" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="$(ExtensionsVersion)" />
 	</ItemGroup>
 	<ItemGroup>
 		<InternalsVisibleTo Include="SnowflakeId.Tests" />
