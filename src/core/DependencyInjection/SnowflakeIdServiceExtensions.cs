@@ -19,11 +19,7 @@ namespace SnowflakeId.DependencyInjection
             }
 
             services.AddOptions();
-            var o = new SnowflakOptions();
-            services.AddSingleton(o);
-            setupAction?.Invoke(o);
-
-            services.TryAddScoped<ISnowflakeService, SnowflakeIdService>();
+            services.TryAddSingleton<ISnowflakeService, SnowflakeIdService>();
             if (setupAction != null)
                 services.Configure(setupAction);
             return services;
@@ -44,7 +40,7 @@ namespace SnowflakeId.DependencyInjection
                 throw new ArgumentException("The SnowflakeId section is not found in the configuration.");
             }
             services.Configure<SnowflakOptions>(snowflakeIdSection);
-            services.TryAddScoped<ISnowflakeService, SnowflakeIdService>();
+            services.TryAddSingleton<ISnowflakeService, SnowflakeIdService>();
             return services;
         }
 

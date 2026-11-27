@@ -41,18 +41,18 @@ namespace SnowflakeId.Core
         DateTime GetGeneratedDateTimeBySnowflakeId(long snowflakeId);
 
         /// <summary>
-        /// Methos to return at which time the id is generated py passing the seconds Since UnixEpoch.
+        /// Method to return at which time the id is generated, by passing the milliseconds since the UnixEpoch.
         /// </summary>
-        /// <param name="secondsSinceUnixEpoch">seconds Since UnixEpoch.</param>
+        /// <param name="millisecondsSinceUnixEpoch">milliseconds since the UnixEpoch.</param>
         /// <returns>A <see cref="DateTime"/> struct.</returns>
-        DateTime GetDateTimeBySecondsSinceUnixEpoch(long secondsSinceUnixEpoch);
+        DateTime GetDateTimeByMillisecondsSinceUnixEpoch(long millisecondsSinceUnixEpoch);
 
         /// <summary>
-        /// Method return seconds since the UnixEpoch from a given generated snowflake id.
+        /// Method return milliseconds since the UnixEpoch from a given generated snowflake id.
         /// </summary>
         /// <param name="snowflakeId">snowflakeId.</param>
-        /// <returns>The seconds as a long data type.</returns>
-        long GetSecondsSinceUnixEpochFromId(long snowflakeId);
+        /// <returns>The milliseconds as a long data type.</returns>
+        long GetMillisecondsSinceUnixEpochFromId(long snowflakeId);
 
         /// <summary>
         /// A method return at which data cennter id the snowflake id is generated.
