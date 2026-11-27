@@ -12,9 +12,10 @@ namespace SnowflakeId.Core
         public const int TotalBits = 64;
 
         /// <summary>
-        /// timestamp in bits - 1 bit, 42
+        /// timestamp in bits, 41. The remaining (most significant) bit of the 64-bit id is
+        /// always left unset so generated ids never become negative.
         /// </summary>
-        public const int EpochBits = 42;
+        public const int EpochBits = 41;
 
         /// <summary>
         /// machain id in bits, 10
@@ -37,5 +38,11 @@ namespace SnowflakeId.Core
         /// 4095
         /// </summary>
         public static readonly int MaxSequenceId = (int)(Math.Pow(2, SequenceBits) - 1);
+
+        /// <summary>
+        /// The largest timestamp (relative to the configured epoch, in milliseconds) that fits
+        /// in <see cref="EpochBits"/> bits without overflowing into the id's sign bit.
+        /// </summary>
+        public static readonly long MaxTimestamp = (1L << EpochBits) - 1;
     }
 }

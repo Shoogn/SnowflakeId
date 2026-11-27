@@ -25,6 +25,14 @@ namespace SnowflakeId.Core
         public DateTime? CustomEpoch { get; set; }
 
         /// <summary>
+        /// Get or set how many milliseconds the system clock is allowed to move backwards before
+        /// id generation throws. When a backward move is within this tolerance, generation waits
+        /// for the clock to catch up instead of failing. The default value is <c>0</c>, meaning any
+        /// backward clock movement throws immediately.
+        /// </summary>
+        public long ClockBackwardnessToleranceMillis { get; set; } = 0;
+
+        /// <summary>
         /// events
         public SnowflakeIdEvents Events { get; set; } = new SnowflakeIdEvents();
 

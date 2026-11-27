@@ -11,9 +11,9 @@ namespace SnowflakeId.Tests
         }
 
         [Fact]
-        public void SnowflakeIdConfig_EpochBits_Length_Is_42()
+        public void SnowflakeIdConfig_EpochBits_Length_Is_41()
         {
-            Assert.Equal(42, SnowflakeIdConfig.EpochBits);
+            Assert.Equal(41, SnowflakeIdConfig.EpochBits);
         }
 
         [Fact]

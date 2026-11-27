@@ -31,7 +31,7 @@ namespace SnowflakeId.Tests
             var snowflakeIdOption = snowflakeIdOptionGetter.Value;
 
             Assert.NotNull(snowflakeId);
-            Assert.Equal(ServiceLifetime.Scoped, snowflakeId.Lifetime);
+            Assert.Equal(ServiceLifetime.Singleton, snowflakeId.Lifetime);
             Assert.Null(snowflakeIdOption.DataCenterId);
         }
 

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0;net10.0</TargetFrameworks>
+		<TargetFrameworks>net6.0;net7.0;net8.0;net9.0;net10.0;net10.0;net11.0</TargetFrameworks>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
 		<PackageId>Hussien.SnowflakeId</PackageId>
@@ -24,6 +24,7 @@
 		<Net8Version>8.0.0</Net8Version>
 		<Net9Version>9.0.0</Net9Version>
 		<Net10Version>10.0.0</Net10Version>
+		<Net11Version>11.0.0</Net11Version>
 	</PropertyGroup>
 	
 	<PropertyGroup>
@@ -32,6 +33,7 @@
 		<ExtensionsVersion Condition="'$(TargetFramework)' == 'net8.0'">$(Net8Version)</ExtensionsVersion>
 		<ExtensionsVersion Condition="'$(TargetFramework)' == 'net9.0'">$(Net9Version)</ExtensionsVersion>
 		<ExtensionsVersion Condition="'$(TargetFramework)' == 'net10.0'">$(Net10Version)</ExtensionsVersion>
+		<ExtensionsVersion Condition="'$(TargetFramework)' == 'net11.0'">$(Net11Version)</ExtensionsVersion>
 	</PropertyGroup>
 	
 	<ItemGroup>

@@ -14,10 +14,11 @@ using System;
 using System.Threading.Tasks;
 
 
+
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices((_, services) =>
     {
-        services.AddSnowflakeUniqueId( options =>
+        services.AddSnowflakeUniqueId(options =>
         {
             options.DataCenterId = 7;
             options.Events = new SnowflakeIdEvents
@@ -40,14 +41,7 @@ IHost host = Host.CreateDefaultBuilder(args)
 var idServive = host.Services.GetRequiredService<ISnowflakeService>();
 
 var uniqueId = idServive.GenerateSnowflakeId();
-Console.WriteLine("The unique Id is: {0}", uniqueId);
-Console.WriteLine("*******************************");
-
 var generatedAt = idServive.GetGeneratedDateTimeBySnowflakeId(uniqueId);
-
-Console.WriteLine("The Id is: {0} and is generated At: {1}", uniqueId, generatedAt);
-
 var dataCenterId = idServive.GetDataCenterIdBySnowflakeId(uniqueId);
-Console.WriteLine("The id is generated at data center has id: {0}", dataCenterId);
-
+Console.WriteLine("The Id is: {0} and is generated At: {1} in data center: {2}", uniqueId, generatedAt, dataCenterId);
 Console.ReadLine();
