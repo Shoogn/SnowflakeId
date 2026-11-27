@@ -5,11 +5,11 @@ This is an implementation of snowflakeId algorithm in C# programming language, t
 
 ### Get Started
 Hussien.SnowflakeId is a library that can help you to generate a unique Id, specifically for those who are working in a Distributed Systems.
-The current version of this library is 3.3.0, and it supports net6.0, net7.0, net8.0, net9.0 and net10.0.
+The current version of this library is 3.4.0, and it supports net6.0, net7.0, net8.0, net9.0, net10.0 and net11.0.
 
 To strat using Hussien.SnowflakeId library you can install it by using Nugget Mackage Manger or by installing it from the command line  via `dotnet cli` by running the following command:
 ```
-dotnet add package Hussien.SnowflakeId --version 3.3.0
+dotnet add package Hussien.SnowflakeId --version 3.4.0
 ```
 |   Package      |    Varsion   |    Downloads   |
 | ------- | ----- | ----- |
@@ -31,6 +31,13 @@ builder.Services.AddSnowflakeUniqueId(options =>
 {
     options.DataCenterId = 1;      // in production get this value from the appsettings.json file.
     options.UseConsoleLog = true;  // this is available only on version 3.1.0 and above.
+
+    // a new property available on version 3.4.0 and above
+    // indicate how many milliseconds the system clock is allowed to move backwards before
+    // id generation throws. When a backward move is within this tolerance, generation waits
+    // for the clock to catch up instead of failing. The default value is <c>0</c>, meaning any
+    // backward clock movement throws immediately.
+    option.ClockBackwardnessToleranceMillis = 0;
 });
 ```
 ---
@@ -45,7 +52,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSnowflakeUniqueId(options =>
 {
     options.DataCenterId = 1;             // in production get this value from the appsettings.json file.
-    options.UseConsoleLog = false;        // this is available only on version 3.1.0 and above.
+    options.UseConsoleLog = false;        // this is available on version 3.1.0 and above.
+
+    // a new property available on version 3.4.0 and above
+    // indicate how many milliseconds the system clock is allowed to move backwards before
+    // id generation throws. When a backward move is within this tolerance, generation waits
+    // for the clock to catch up instead of failing. The default value is <c>0</c>, meaning any
+    // backward clock movement throws immediately.
+    option.ClockBackwardnessToleranceMillis = 0;
 });
 
 var app = builder.Build();
@@ -82,6 +96,13 @@ IHost host = Host.CreateDefaultBuilder(args)
             options.DataCenterId = 7;
             options.UseConsoleLog = false; // this is available only on version 3.1.0 and above.
 
+            // a new property available on version 3.4.0 and above
+            // indicate how many milliseconds the system clock is allowed to move backwards before
+            // id generation throws. When a backward move is within this tolerance, generation waits
+            // for the clock to catch up instead of failing. The default value is <c>0</c>, meaning any
+            // backward clock movement throws immediately.
+            option.ClockBackwardnessToleranceMillis = 0;
+
             // These are two new events are added to version 3.2.0,
             // one is firing before generating Id and the other one after generating id.
             options.Events = new SnowflakeIdEvents
@@ -102,19 +123,14 @@ IHost host = Host.CreateDefaultBuilder(args)
 
 var idServive = host.Services.GetRequiredService<ISnowflakeService>();
 
+var idServive = host.Services.GetRequiredService<ISnowflakeService>();
+
 var uniqueId = idServive.GenerateSnowflakeId();
-Console.WriteLine("The unique Id is: {0}", uniqueId);
-Console.WriteLine("*******************************");
-
 var generatedAt = idServive.GetGeneratedDateTimeBySnowflakeId(uniqueId);
-Console.WriteLine("The Id is: {0} and is generated At: {1}", uniqueId, generatedAt);
-
-var dataCenterId = idServive.GetDataCenterIdBySnowflakId(uniqueId);
-Console.WriteLine("The id is generated at data center has id: {0}", dataCenterId);
-
+var dataCenterId = idServive.GetDataCenterIdBySnowflakeId(uniqueId);
+Console.WriteLine("The Id is: {0} and is generated At: {1} in data center: {2}", uniqueId, generatedAt, dataCenterId);
 Console.ReadLine();
 ```
 As you can see from the previous code, you can generate a new id, then you can query at which time the id is generated, and lastly at which data center id is saved .
 See the result of the above console application in the below pic:
-
-![image](https://github.com/user-attachments/assets/232917a8-f2ca-41dd-8c11-780e53ea65a9)
+<img width="904" height="67" alt="image" src="https://github.com/user-attachments/assets/d434b845-1d9f-4e09-aebe-b7f4458998b3" />
